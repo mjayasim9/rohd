@@ -64,14 +64,14 @@
       
   <div>
     <ol class="annotation-list">
-        <li>@<a href="https://api.dart.dev/stable/3.4.4/dart-core/override-constant.html">override</a></li>
+        <li>@<a href="https://api.dart.dev/stable/3.5.0/dart-core/override-constant.html">override</a></li>
     </ol>
   </div>
 
 <span class="returntype"><a href="../../rohd/Logic-class.html">Logic</a></span>
-<span class="name ">getRange</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="getRange-param-startIndex"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.4.4/dart-core/int-class.html">int</a></span> <span class="parameter-name">startIndex</span>, </span></li>
-<li><span class="parameter" id="getRange-param-endIndex">[<span class="type-annotation"><a href="https://api.dart.dev/stable/3.4.4/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">endIndex</span>]</span></li>
-</ol>)
+<span class="name ">getRange</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="getRange-param-startIndex"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.5.0/dart-core/int-class.html">int</a></span> <span class="parameter-name">startIndex</span>, [</span></li>
+<li><span class="parameter" id="getRange-param-endIndex"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.5.0/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">endIndex</span></span></li>
+</ol>])
 
       <div class="features"><span class="feature">override</span></div>
 
@@ -125,10 +125,17 @@ Logic getRange(int startIndex, [int? endIndex]) {
     final elementStart = index;
     final elementEnd = index + element.width;
 
-    final elementInRange = ((elementStart &gt;= modifiedStartIndex) &amp;&amp;
-            (elementStart &lt; modifiedEndIndex)) ||
-        ((elementEnd &gt; modifiedStartIndex) &amp;&amp;
-            (elementEnd &lt;= modifiedEndIndex));
+    &#47;&#47; if the element is even partially within the range, then include it
+    &#47;&#47; OR, if it is wholly contained within the range, include it
+    final elementInRange =
+        &#47;&#47; end is within the element
+        (modifiedEndIndex &gt; elementStart &amp;&amp; modifiedEndIndex &lt; elementEnd) ||
+            &#47;&#47; start is within the element
+            (modifiedStartIndex &gt;= elementStart &amp;&amp;
+                modifiedStartIndex &lt; elementEnd) ||
+            &#47;&#47;element is fully contained
+            (modifiedEndIndex &gt;= elementEnd &amp;&amp;
+                modifiedStartIndex &lt;= elementStart);
 
     if (elementInRange) {
       &#47;&#47; figure out the subset of `element` that needs to be included
