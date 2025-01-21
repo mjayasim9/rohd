@@ -16,15 +16,11 @@
   <link rel="stylesheet" href="../../static-assets/github.css?v1">
   <link rel="stylesheet" href="../../static-assets/styles.css?v1">
   <link rel="icon" href="../../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
@@ -50,7 +46,6 @@
   </div>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -62,16 +57,10 @@
 
     <section class="multi-line-signature">
       
-  <div>
-    <ol class="annotation-list">
-        <li>@<a href="https://pub.dev/documentation/meta/1.15.0/meta/protected-constant.html">protected</a></li>
-    </ol>
-  </div>
-
 <span class="returntype"><a href="../../rohd/Logic-class.html">Logic</a></span>
-<span class="name ">addInput</span>(<wbr><ol class="parameter-list"> <li><span class="parameter" id="addInput-param-name"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.5.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>, </span></li>
-<li><span class="parameter" id="addInput-param-x"><span class="type-annotation"><a href="../../rohd/Logic-class.html">Logic</a></span> <span class="parameter-name">x</span>, {</span></li>
-<li><span class="parameter" id="addInput-param-width"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.5.0/dart-core/int-class.html">int</a></span> <span class="parameter-name">width</span> = <span class="default-value">1</span>, </span></li>
+<span class="name ">addInput</span>(<wbr><ol class="parameter-list"> <li><span class="parameter" id="addInput-param-name"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.6.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>, </span></li>
+<li><span class="parameter" id="addInput-param-source"><span class="type-annotation"><a href="../../rohd/Logic-class.html">Logic</a></span> <span class="parameter-name">source</span>, {</span></li>
+<li><span class="parameter" id="addInput-param-width"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.6.1/dart-core/int-class.html">int</a></span> <span class="parameter-name">width</span> = <span class="default-value">1</span>, </span></li>
 </ol>})
 
       
@@ -81,31 +70,34 @@
 <section class="desc markdown">
   <p>Registers a signal as an input to this <a href="../../rohd/Module-class.html">Module</a> and returns an input port
 that can be consumed.</p>
-<p>The return value is the same as what is returned by <a href="../../rohd/Module/input.html">input</a>.</p>
+<p>The return value is the same as what is returned by <a href="../../rohd/Module/input.html">input</a> and should
+only be used within this <a href="../../rohd/Module-class.html">Module</a>. The provided <code>source</code> is accessible via
+<a href="../../rohd/Module/inputSource.html">inputSource</a>.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">@protected
-Logic addInput(String name, Logic x, {int width = 1}) {
+  <pre class="language-dart"><code class="language-dart">Logic addInput(String name, Logic source, {int width = 1}) {
   _checkForSafePortName(name);
-  if (x.width != width) {
-    throw PortWidthMismatchException(x, width);
+  if (source.width != width) {
+    throw PortWidthMismatchException(source, width);
   }
 
-  if (x is LogicStructure) {
+  if (source is LogicStructure) {
     &#47;&#47; ignore: parameter_assignments
-    x = x.packed;
+    source = source.packed;
   }
 
   final inPort = Logic(name: name, width: width, naming: Naming.reserved)
-    ..gets(x)
+    ..gets(source)
     &#47;&#47; ignore: invalid_use_of_protected_member
     ..parentModule = this;
 
   _inputs[name] = inPort;
+
+  _inputSources[name] = source;
 
   return inPort;
 }</code></pre>
@@ -113,7 +105,6 @@ Logic addInput(String name, Logic x, {int width = 1}) {
 
 
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -121,7 +112,6 @@ Logic addInput(String name, Logic x, {int width = 1}) {
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">rohd</a></li>
     <li><a href="../../rohd/rohd-library.html">rohd</a></li>
@@ -129,33 +119,24 @@ Logic addInput(String name, Logic x, {int width = 1}) {
     <li class="self-crumb">addInput method</li>
 </ol>
 
-
     <h5>Module class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
 </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     rohd
-      0.5.3
+      0.6.1
   </span>
-
   
 </footer>
-
 
 
 <script src="../../static-assets/highlight.pack.js?v1"></script>
 <script src="../../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 
